@@ -1,3 +1,5 @@
+![logo](https://github.com/Shubham-Tambei9/Shubham-Tambei9/blob/main/Banner.png)
+
 <h2 align="left">Hi 👋! My name is Shubham Tambe and I'm a Software Developer </h2>
 <img alt ="Visitor count" src= "https://profile-counter.glitch.me/Shubham-Tambei9/count.svg"/>
 
@@ -16,6 +18,7 @@
 
 
 
+
 ###
 
 <h3 align="left">Connect with me:</h3>
@@ -25,6 +28,7 @@
 <a href="https://www.hackerrank.com/profile/shubhamtambei9" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/hackerrank.svg" alt="https://www.hackerrank.com/profile/shubhamtambei9" height="30" width="40" /></a>
 <a href="https://leetcode.com/u/shubham-tambei9/" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/leet-code.svg" alt="https://leetcode.com/u/shubham-tambei9/" height="30" width="40" /></a>
 </p>
+
 
 ###
 
