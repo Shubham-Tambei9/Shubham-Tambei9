@@ -1,6 +1,6 @@
 ![logo](https://github.com/Shubham-Tambei9/Shubham-Tambei9/blob/main/Banner.png)
 
-<h2 align="Center">Hi 👋! My name is Shubham Tambe</h2>
+<h2 align="Center">Hi! My name is Shubham Tambe</h2>
 
 ###
 <p align="center">
