@@ -4,7 +4,7 @@
 
 ###
 <p align="center">
-  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=24&pause=1000&color=FFFFFF&center=true&vCenter=true&width=600&lines=UI/UX+Designer;Data+Science+Enthusiast;Tech+Explorer;Turning+Ideas+into+Reality;Building+Innovative+Solutions" alt="Typing SVG" />
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=26&pause=1000&color=FFFFFF&center=true&vCenter=true&width=600&lines=UI/UX+Designer;Data+Science+Enthusiast;Tech+Explorer;Turning+Ideas+into+Reality;Building+Innovative+Solutions" alt="Typing SVG" />
 </p>
 
 ###
