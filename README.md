@@ -8,8 +8,6 @@
 </p>
 
 ###
-<img alt ="Visitor count" src= "https://profile-counter.glitch.me/Shubham-Tambei9/count.svg"/>
-
 
 <div align="center">
 <img alt ="my stats" src="https://github-readme-stats.vercel.app/api?username=Shubham-Tambei9&show_icons=true&theme=radical"/>
