@@ -2,6 +2,13 @@
 
 <h2 align="Center">Hi! My name is Shubham Tambe</h2>
 
+<p align="center">
+  <img 
+    src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=26&pause=1000&color=00FFFF&center=true&vCenter=true&width=700&lines=UI%2FUX+Designer;Data+Science+Enthusiast;Tech+Explorer;Turning+Ideas+into+Reality;Building+Innovative+Solutions" 
+    alt="Typing SVG" 
+  />
+</p>
+
 ###
 <div align="center">
 
