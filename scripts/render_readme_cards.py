@@ -150,20 +150,88 @@ def text_lines(x, y, lines, lh, attrs):
 
 
 # ---- 1 · hero -----------------------------------------------------------------
+def neural_net_graphic():
+    layers = [
+        {'name': 'INPUT', 'count': 4, 'x': 545},
+        {'name': 'CONV', 'count': 6, 'x': 628},
+        {'name': 'ATTN', 'count': 5, 'x': 712},
+        {'name': 'OUTPUT', 'count': 3, 'x': 795}
+    ]
+    center_y = 215
+    total_h = 190
+    
+    nodes = []
+    for l_idx, layer in enumerate(layers):
+        n = layer['count']
+        spacing = total_h / (n + 1)
+        layer_nodes = []
+        for i in range(n):
+            ny = (center_y - total_h / 2) + (i + 1) * spacing
+            layer_nodes.append((layer['x'], round(ny, 1)))
+        nodes.append(layer_nodes)
+        
+    lines = []
+    for l in range(len(nodes) - 1):
+        for p1 in nodes[l]:
+            for p2 in nodes[l+1]:
+                lines.append(f'<line x1="{p1[0]}" y1="{p1[1]}" x2="{p2[0]}" y2="{p2[1]}" stroke="#30363d" stroke-width="0.8" opacity="0.35" />')
+                
+    active_paths = [
+        (nodes[0][1], nodes[1][2]),
+        (nodes[1][2], nodes[2][2]),
+        (nodes[2][2], nodes[3][1]),
+        (nodes[0][2], nodes[1][3]),
+        (nodes[1][3], nodes[2][1]),
+        (nodes[2][1], nodes[3][0]),
+        (nodes[0][0], nodes[1][1]),
+        (nodes[1][1], nodes[2][3]),
+        (nodes[2][3], nodes[3][2]),
+    ]
+    active_lines = []
+    pulses = []
+    for i, (p1, p2) in enumerate(active_paths):
+        active_lines.append(f'<line x1="{p1[0]}" y1="{p1[1]}" x2="{p2[0]}" y2="{p2[1]}" stroke="#238636" stroke-width="1.6" opacity="0.85" />')
+        delay = (i % 4) * 0.42
+        pulses.append(
+            f'<circle r="2.5" fill="#56e36d">'
+            f'<animateMotion path="M {p1[0]} {p1[1]} L {p2[0]} {p2[1]}" dur="1.7s" repeatCount="indefinite" begin="{delay:.2f}s" />'
+            f'</circle>'
+        )
+        
+    labels = [
+        f'<text x="{l["x"]}" y="326" text-anchor="middle" font-family="{MONO}" font-size="9" letter-spacing="1" fill="#8b949e">{l["name"]}</text>'
+        for l in layers
+    ]
+
+    node_elements = []
+    for l_idx, layer_pts in enumerate(nodes):
+        for pt in layer_pts:
+            node_elements.append(
+                f'<circle cx="{pt[0]}" cy="{pt[1]}" r="5.5" fill="#161b22" stroke="#39d353" stroke-width="1.8" />'
+                f'<circle cx="{pt[0]}" cy="{pt[1]}" r="2" fill="#56e36d"><animate attributeName="opacity" values="0.4;1;0.4" dur="2.2s" repeatCount="indefinite" /></circle>'
+            )
+
+    return f"""
+<g class="f" {d(0.3)}>
+  <rect x="500" y="52" width="338" height="308" rx="12" fill="#0d1117" stroke="#30363d" stroke-width="1" />
+  <circle cx="522" cy="74" r="3.5" fill="{TECH}" />
+  <text x="534" y="78" font-family="{MONO}" font-size="10" letter-spacing="1" fill="{MUTED}">TENSOR_GRAPH // NEURAL_NET</text>
+  <text x="822" y="78" text-anchor="end" font-family="{MONO}" font-size="9.5" fill="{TECH}">FORWARD PASS [LIVE]</text>
+  <line x1="500" y1="92" x2="838" y2="92" stroke="{RULE}" stroke-width="1" />
+  {''.join(lines)}
+  {''.join(active_lines)}
+  {''.join(pulses)}
+  {''.join(node_elements)}
+  {''.join(labels)}
+  <line x1="500" y1="336" x2="838" y2="336" stroke="{RULE}" stroke-width="1" />
+  <text x="518" y="351" font-family="{MONO}" font-size="9.5" fill="{MUTED}">LATENT: <tspan fill="{INK}">ℝ^{{B×768}}</tspan></text>
+  <text x="822" y="351" text-anchor="end" font-family="{MONO}" font-size="9.5" fill="{MUTED}">INFERENCE: <tspan fill="{TECH}">&lt; 8.2ms</tspan></text>
+</g>
+"""
+
+
 def hero():
     h = 420
-    src = open(PORTRAIT).read()
-    rows = re.findall(r'<text xml:space="preserve"[^>]*\by="([\d.]+)"[^>]*>(.*?)</text>', src, re.S)
-    n = len(rows)
-    portrait = []
-    for i, (y, txt) in enumerate(rows):
-        # rows "print" top to bottom like a slow terminal
-        portrait.append(
-            f'<text class="f" style="animation-delay:{0.25 + i * 0.018:.3f}s;animation-duration:.35s" '
-            f'xml:space="preserve" x="20" y="{y}" fill="{INK}" font-size="7.2" '
-            f'textLength="800" lengthAdjust="spacing">{txt}</text>'
-        )
-    s = 0.41
     body = f"""
 <defs>
   <linearGradient id="shine" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="600" y2="0">
@@ -188,9 +256,7 @@ def hero():
   <text x="48" y="396" font-family="{MONO}" font-size="13" fill="{INK}">linkedin.com/in/shubham-tambe-i9</text>
   <text class="nu" x="306" y="396" font-family="{MONO}" font-size="13" fill="{TECH}">&#8599;</text>
 </g>
-<g transform="translate(520 46) scale({s}) translate(-20 -37)" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">
-  {''.join(portrait)}
-</g>
+{neural_net_graphic()}
 """
     write("hero.svg", svg(W, h, body, ["serif", "serif-i", "sans", "mono"],
                           "Shubham Tambe. AI Research Contractor & Software Developer."))
