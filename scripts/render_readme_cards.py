@@ -275,8 +275,10 @@ def hero():
 </g>
 {wireframe_graphic()}
 """
-    write("hero.svg", svg(W, h, body, ["serif", "serif-i", "sans", "mono"],
-                          "Shubham Tambe. AI Research Contractor & Software Developer."))
+    hero_svg_data = svg(W, h, body, ["serif", "serif-i", "sans", "mono"],
+                        "Shubham Tambe. AI Research Contractor & Software Developer.")
+    write("hero.svg", hero_svg_data)
+    write("hero-tensor.svg", hero_svg_data)
 
 
 # ---- 2 · world tiles ----------------------------------------------------------
