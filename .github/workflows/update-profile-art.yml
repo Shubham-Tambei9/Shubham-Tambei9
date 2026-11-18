@@ -28,9 +28,11 @@ jobs:
 
       - name: Scrape real contribution data (no auth needed)
         run: python scripts/fetch_contributions.py
+        env:
+          GH_PROFILE_USER: Shubham-Tambei9
 
       - name: Render animated contribution graph SVG
-        run: python scripts/generate_streak_svg.py AVIVASHISHTA29 contrib-heatmap.svg
+        run: python scripts/generate_streak_svg.py Shubham-Tambei9 contrib-heatmap.svg
 
       - name: Render streak / numbers card
         run: python scripts/render_stats_svg.py

@@ -177,23 +177,23 @@ def hero():
 <rect width="{W}" height="{h}" rx="14" fill="{PAPER}"/>
 <g class="f" {d(0)}>
   <rect class="live" x="48" y="49" width="8" height="8" rx="2" fill="{TECH}"/>
-  <text x="66" y="57" font-family="{MONO}" font-size="12" letter-spacing="1" fill="{MUTED}">FULLSTACK ENGINEER AT DOCK</text>
+  <text x="66" y="57" font-family="{MONO}" font-size="12" letter-spacing="1" fill="{MUTED}">UI/UX DESIGNER &amp; DATA SCIENTIST</text>
 </g>
-<text class="r" {d(0.15)} x="44" y="190" font-family="{SERIF}" font-size="116" letter-spacing="-2.5" fill="{INK}">Avi</text>
-<text class="r" {d(0.3)} x="44" y="290" font-family="{SERIF}" font-style="italic" font-size="116" letter-spacing="-2.5" fill="url(#shine)">Vashishta</text>
+<text class="r" {d(0.15)} x="44" y="190" font-family="{SERIF}" font-size="116" letter-spacing="-2.5" fill="{INK}">Shubham</text>
+<text class="r" {d(0.3)} x="44" y="290" font-family="{SERIF}" font-style="italic" font-size="116" letter-spacing="-2.5" fill="url(#shine)">Tambe</text>
 <g class="r" {d(0.55)}>
-  {text_lines(48, 338, ["I build AI products, make Reels about them,", "and teach people to do the same."], 27, f'font-family="{SANS}" font-size="18" fill="{INK_SOFT}"')}
+  {text_lines(48, 338, ["Turning ideas into code & intuitive design,", "exploring data science & building full-stack products."], 27, f'font-family="{SANS}" font-size="18" fill="{INK_SOFT}"')}
 </g>
 <g class="f" {d(0.8)}>
-  <text x="48" y="396" font-family="{MONO}" font-size="13" fill="{INK}">avivashishta.com</text>
-  <text class="nu" x="186" y="396" font-family="{MONO}" font-size="13" fill="{TECH}">&#8599;</text>
+  <text x="48" y="396" font-family="{MONO}" font-size="13" fill="{INK}">linkedin.com/in/shubham-tambe-i9</text>
+  <text class="nu" x="306" y="396" font-family="{MONO}" font-size="13" fill="{TECH}">&#8599;</text>
 </g>
 <g transform="translate(520 46) scale({s}) translate(-20 -37)" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">
   {''.join(portrait)}
 </g>
 """
     write("hero.svg", svg(W, h, body, ["serif", "serif-i", "sans", "mono"],
-                          "Avi Vashishta. Fullstack engineer at Dock. I build AI products, make Reels about them, and teach people to do the same."))
+                          "Shubham Tambe. UI/UX Designer & Data Scientist. Turning ideas into code and intuitive design."))
 
 
 # ---- 2 · world tiles ----------------------------------------------------------
@@ -311,9 +311,9 @@ def activity(data):
 # ---- 4 · repo cards -----------------------------------------------------------
 REPO_W, REPO_H = 880 / 3 - 8, 176
 REPOS = [
-    ("website-to-code", "Cool websites rebuilt as code you can use, one interaction per episode.", "TypeScript", TECH),
-    ("india-protest-map", "A live map of protests across India, built from GDELT news every 30 minutes.", "HTML", STUDIO),
-    ("learning-agent", "Turns a PDF into a guided lesson: an AI agent plans it, quizzes you and reports back.", "TypeScript", LEARN),
+    ("saans-mumbai-air", "Mumbai's 48-hr clean-air forecast map, exposure tracker and 3D living city.", "Python", TECH),
+    ("filament-segmentation-2026", "Solar filament instance segmentation with U-Net ensemble for Kaggle 2026.", "Python", STUDIO),
+    ("portfolio-site", "Personal portfolio — projects, research and live activity in React + Vite.", "JavaScript", LEARN),
 ]
 
 
@@ -402,7 +402,7 @@ def repo_stars():
         import requests
 
         for name, *_ in REPOS:
-            r = requests.get(f"https://api.github.com/repos/AviVashishta29/{name}", timeout=10)
+            r = requests.get(f"https://api.github.com/repos/Shubham-Tambei9/{name}", timeout=10)
             if r.ok:
                 stars[name] = r.json().get("stargazers_count", 0)
     except Exception as e:  # offline: keep going without stars
@@ -413,16 +413,16 @@ def repo_stars():
 if __name__ == "__main__":
     data = json.load(open(DATA))
     hero()
-    tile("build", "BUILD", TECH, "#ffffff", "3", "startups",
-         "Dock today. Before that Raycaster and AccioJob (YC), and Turgon AI.", 3.1, 0)
-    tile("brand", "BRAND", STUDIO, "#ffffff", REEL_VIEWS, "views",
-         "Six months of Reels, with Higgsfield, Replit, Huggle AI and Tripo AI.", 3.35, 1)
-    tile("learn", "LEARN", LEARN, INK, BLOG_READERS, "readers",
-         "Free resources for students and early-career devs, read this year.", 3.6, 2)
+    tile("build", "DESIGN", TECH, "#ffffff", "10+", "designs",
+         "Crafting intuitive web interfaces and interactive systems in Figma.", 3.1, 0)
+    tile("brand", "DATA", STUDIO, "#ffffff", "5+", "projects",
+         "Exploratory data analysis, predictive modeling with Python & Scikit-learn.", 3.35, 1)
+    tile("learn", "CODE", LEARN, INK, "300+", "problems",
+         "Active algorithmic problem solver on LeetCode, CodeChef, and HackerRank.", 3.6, 2)
     activity(data)
     stars = repo_stars()
     for i, (name, desc, lang, color) in enumerate(REPOS):
-        repo_card(i, name, desc, lang, color, stars.get(name) if name != "india-protest-map" else 0)
+        repo_card(i, name, desc, lang, color, stars.get(name, 0))
     section_title("What I'm", "coding", "dark")
     section_title("What I'm", "coding", "light")
     heatmap(data)

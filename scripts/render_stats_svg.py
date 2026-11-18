@@ -53,7 +53,8 @@ BAR_DUR = 0.6
 
 
 def short(d):
-    return datetime.date.fromisoformat(d).strftime("%b %-d")
+    dt = datetime.date.fromisoformat(d)
+    return f"{dt.strftime('%b')} {dt.day}"
 
 
 def span(s):
