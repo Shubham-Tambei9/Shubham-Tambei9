@@ -177,12 +177,12 @@ def hero():
 <rect width="{W}" height="{h}" rx="14" fill="{PAPER}"/>
 <g class="f" {d(0)}>
   <rect class="live" x="48" y="49" width="8" height="8" rx="2" fill="{TECH}"/>
-  <text x="66" y="57" font-family="{MONO}" font-size="12" letter-spacing="1" fill="{MUTED}">UI/UX DESIGNER &amp; DATA SCIENTIST</text>
+  <text x="66" y="57" font-family="{MONO}" font-size="11" letter-spacing="1" fill="{MUTED}">AI RESEARCH CONTRACTOR &amp; SOFTWARE DEVELOPER</text>
 </g>
 <text class="r" {d(0.15)} x="44" y="190" font-family="{SERIF}" font-size="116" letter-spacing="-2.5" fill="{INK}">Shubham</text>
 <text class="r" {d(0.3)} x="44" y="290" font-family="{SERIF}" font-style="italic" font-size="116" letter-spacing="-2.5" fill="url(#shine)">Tambe</text>
 <g class="r" {d(0.55)}>
-  {text_lines(48, 338, ["Turning ideas into code & intuitive design,", "exploring data science & building full-stack products."], 27, f'font-family="{SANS}" font-size="18" fill="{INK_SOFT}"')}
+  {text_lines(48, 338, ["AI Research Contractor & Software Developer.", "Building intelligent systems and full-stack software."], 27, f'font-family="{SANS}" font-size="18" fill="{INK_SOFT}"')}
 </g>
 <g class="f" {d(0.8)}>
   <text x="48" y="396" font-family="{MONO}" font-size="13" fill="{INK}">linkedin.com/in/shubham-tambe-i9</text>
@@ -193,7 +193,7 @@ def hero():
 </g>
 """
     write("hero.svg", svg(W, h, body, ["serif", "serif-i", "sans", "mono"],
-                          "Shubham Tambe. UI/UX Designer & Data Scientist. Turning ideas into code and intuitive design."))
+                          "Shubham Tambe. AI Research Contractor & Software Developer."))
 
 
 # ---- 2 · world tiles ----------------------------------------------------------
@@ -425,12 +425,12 @@ def repo_stars():
 if __name__ == "__main__":
     data = json.load(open(DATA))
     hero()
-    tile("build", "DESIGN", TECH, "#ffffff", "10+", "designs",
-         "Crafting intuitive web interfaces and interactive systems in Figma.", 3.1, 0)
-    tile("brand", "DATA", STUDIO, "#ffffff", "5+", "projects",
-         "Exploratory data analysis, predictive modeling with Python & Scikit-learn.", 3.35, 1)
+    tile("build", "RESEARCH", TECH, "#ffffff", "5+", "models",
+         "Computer vision, deep learning pipelines, and Kaggle research.", 3.1, 0)
+    tile("brand", "SOFTWARE", STUDIO, "#ffffff", "10+", "projects",
+         "Full-stack web applications, APIs, and scalable software systems.", 3.35, 1)
     tile("learn", "CODE", LEARN, INK, "300+", "problems",
-         "Active algorithmic problem solver on LeetCode, CodeChef, and HackerRank.", 3.6, 2)
+         "Algorithmic problem solving across LeetCode, CodeChef, and HackerRank.", 3.6, 2)
     activity(data)
     stars = repo_stars()
     for i, (name, desc, lang, color) in enumerate(REPOS):
