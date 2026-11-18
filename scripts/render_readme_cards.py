@@ -150,76 +150,99 @@ def text_lines(x, y, lines, lh, attrs):
 
 
 # ---- 1 · hero -----------------------------------------------------------------
-def cyber_ascii_graphic():
-    art_lines = [
-        "      .--------------------------------.      ",
-        "     /   [ AI NEURAL PROCESSOR CORE ]   \\     ",
-        "  .-/------------------------------------\\-.  ",
-        " /|  [+] ===== TENSOR PIPELINE ===== [+]  |\\ ",
-        "| | .------------------------------------. | |",
-        "| | | [INPUT BUFFER] | [MATMUL ENGINE]   | | |",
-        "|=| |  ::: ::::: ::: |  @@@ %%%%%%% @@@  | |=|",
-        "| | |----------------+-------------------| | |",
-        "|=| | [KV-CACHE SRAM]| [ATTN CROSSBAR]   | |=|",
-        "| | |  === ===== === |  ### ******* ###  | | |",
-        "|=| |----------------+-------------------| | |",
-        "| | | [VECTOR FPU]   | [QUANTUM ALU]     | |=|",
-        "| | |  ... ..... ... |  %%% ####### %%%  | | |",
-        "| | '------------------------------------' | |",
-        "|=| [+] [BUS: PCIe 5.0] [LAT: 1.2ns]       |=|",
-        " \\|  --==[ CLOCK: 4.8GHz // 420 TFLOPS ]==- |/ ",
-        "  '----------------------------------------'  ",
-        "            ||||||||||||||||||||||            "
-    ]
-    
-    pad_x = 524
-    start_y = 112
-    line_h = 11.5
-    
-    rendered_rows = []
-    for i, line in enumerate(art_lines):
-        delay = 0.2 + i * 0.04
-        safe = escape(line)
-        y = start_y + i * line_h
-        
-        color = "#c9d1d9"
-        if "PROCESSOR" in safe or "TENSOR" in safe or "CLOCK" in safe:
-            color = TECH
-        elif "===" in safe or "---" in safe:
-            color = "#58a6ff"
-        elif "|||" in safe:
-            color = MUTED
-            
-        rendered_rows.append(
-            f'<text class="f" style="animation-delay:{delay:.2f}s" '
-            f'xml:space="preserve" x="{pad_x}" y="{y:.1f}" fill="{color}" '
-            f'font-family="{MONO}" font-size="8.0" '
-            f'letter-spacing="0.2">{safe}</text>'
+def wireframe_graphic():
+    import math
+    cx, cy = 669, 206
+    r_outer = 105
+    r_mid = 72
+    r_inner = 42
+
+    def hex_pts(radius, rot_deg=0):
+        pts = []
+        for a in range(0, 360, 60):
+            rad = math.radians(a + rot_deg)
+            pts.append((round(cx + radius * math.cos(rad), 1), round(cy + radius * math.sin(rad), 1)))
+        return pts
+
+    pts_out = hex_pts(r_outer, 30)
+    pts_mid = hex_pts(r_mid, 0)
+    pts_in = hex_pts(r_inner, 30)
+
+    lines = []
+    # Outer hexagon
+    for i in range(6):
+        p1, p2 = pts_out[i], pts_out[(i + 1) % 6]
+        lines.append(f'<line x1="{p1[0]}" y1="{p1[1]}" x2="{p2[0]}" y2="{p2[1]}" stroke="#238636" stroke-width="1.2" opacity="0.75" />')
+
+    # Middle hexagon
+    for i in range(6):
+        p1, p2 = pts_mid[i], pts_mid[(i + 1) % 6]
+        lines.append(f'<line x1="{p1[0]}" y1="{p1[1]}" x2="{p2[0]}" y2="{p2[1]}" stroke="{TECH}" stroke-width="1.4" opacity="0.85" />')
+
+    # Inner hexagon
+    for i in range(6):
+        p1, p2 = pts_in[i], pts_in[(i + 1) % 6]
+        lines.append(f'<line x1="{p1[0]}" y1="{p1[1]}" x2="{p2[0]}" y2="{p2[1]}" stroke="#56e36d" stroke-width="1.2" opacity="0.9" />')
+
+    # Tesseract 3D interconnections
+    for i in range(6):
+        po, pm, pi = pts_out[i], pts_mid[i], pts_in[i]
+        lines.append(f'<line x1="{po[0]}" y1="{po[1]}" x2="{cx}" y2="{cy}" stroke="{RULE}" stroke-width="0.8" stroke-dasharray="3,3" opacity="0.4" />')
+        lines.append(f'<line x1="{po[0]}" y1="{po[1]}" x2="{pm[0]}" y2="{pm[1]}" stroke="#238636" stroke-width="1.0" opacity="0.6" />')
+        lines.append(f'<line x1="{pm[0]}" y1="{pm[1]}" x2="{pi[0]}" y2="{pi[1]}" stroke="{TECH}" stroke-width="1.1" opacity="0.7" />')
+        lines.append(f'<line x1="{pi[0]}" y1="{pi[1]}" x2="{cx}" y2="{cy}" stroke="#56e36d" stroke-width="1.2" opacity="0.85" />')
+
+    vertex_dots = []
+    all_pts = pts_out + pts_mid + pts_in + [(cx, cy)]
+    for idx, (x, y) in enumerate(all_pts):
+        r = 3.5 if (x, y) == (cx, cy) else 2.5
+        fill = "#56e36d" if (x, y) == (cx, cy) else (TECH if idx < 12 else INK)
+        delay = (idx % 5) * 0.4
+        vertex_dots.append(
+            f'<circle cx="{x}" cy="{y}" r="{r}" fill="{fill}">'
+            f'<animate attributeName="r" values="{r};{r+1.5};{r}" dur="2.4s" repeatCount="indefinite" begin="{delay:.2f}s" />'
+            f'<animate attributeName="opacity" values="0.6;1;0.6" dur="2.4s" repeatCount="indefinite" begin="{delay:.2f}s" />'
+            f'</circle>'
         )
+
+    orbit_ring = f"""
+    <ellipse cx="{cx}" cy="{cy}" rx="{r_outer + 18}" ry="{r_outer * 0.42}" fill="none" stroke="{RULE}" stroke-width="1" stroke-dasharray="4,4" opacity="0.6">
+      <animateTransform attributeName="transform" type="rotate" from="0 {cx} {cy}" to="360 {cx} {cy}" dur="18s" repeatCount="indefinite" />
+    </ellipse>
+    <ellipse cx="{cx}" cy="{cy}" rx="{r_outer + 8}" ry="{r_outer * 0.72}" fill="none" stroke="#238636" stroke-width="0.8" opacity="0.35">
+      <animateTransform attributeName="transform" type="rotate" from="360 {cx} {cy}" to="0 {cx} {cy}" dur="24s" repeatCount="indefinite" />
+    </ellipse>
+    """
+
+    geodesic_core = f"""
+    <g>
+      <animateTransform attributeName="transform" type="rotate" from="0 {cx} {cy}" to="360 {cx} {cy}" dur="20s" repeatCount="indefinite" />
+      {''.join(lines)}
+      {''.join(vertex_dots)}
+    </g>
+    """
 
     return f"""
 <g class="f" {d(0.15)}>
-  <!-- Container Backplate -->
   <rect x="500" y="52" width="338" height="308" rx="12" fill="#0d1117" stroke="{RULE}" stroke-width="1" />
   
-  <!-- Header Terminal Bar -->
   <circle cx="518" cy="74" r="3.5" fill="{TECH}" />
   <circle cx="530" cy="74" r="3.5" fill="{LEARN}" opacity="0.6" />
   <circle cx="542" cy="74" r="3.5" fill="{STUDIO}" opacity="0.6" />
   
-  <text x="556" y="78" font-family="{MONO}" font-size="9.5" letter-spacing="1" fill="{MUTED}">AI_CORE // SILICON_DIE</text>
-  <text x="824" y="78" text-anchor="end" font-family="{MONO}" font-size="9" fill="{TECH}">ONLINE [READY]</text>
+  <text x="556" y="78" font-family="{MONO}" font-size="9.5" letter-spacing="1" fill="{MUTED}">TENSOR_FIELD // GEODESIC_3D</text>
+  <text x="824" y="78" text-anchor="end" font-family="{MONO}" font-size="9" fill="{TECH}">SO(3) ROTATION</text>
   <line x1="500" y1="92" x2="838" y2="92" stroke="{RULE}" stroke-width="1" />
   
-  <!-- ASCII Circuit Diagram Rows -->
-  {''.join(rendered_rows)}
+  {orbit_ring}
+  {geodesic_core}
   
-  <!-- Terminal Prompt Footer -->
+  <text x="518" y="112" font-family="{MONO}" font-size="8.5" fill="{MUTED}">PROJ: <tspan fill="{TECH}">ISOMETRIC</tspan></text>
+  <text x="518" y="125" font-family="{MONO}" font-size="8.5" fill="{MUTED}">DIM:  <tspan fill="{INK}">4D TESSERACT</tspan></text>
+  
   <line x1="500" y1="332" x2="838" y2="332" stroke="{RULE}" stroke-width="1" />
-  <text x="518" y="348" font-family="{MONO}" font-size="9.5" fill="{MUTED}">shubham@ai-cluster:~$ <tspan fill="{INK}">run inference</tspan></text>
-  <rect x="734" y="339" width="6" height="10" fill="{TECH}">
-    <animate attributeName="opacity" values="1;1;0;0" keyTimes="0;0.5;0.51;1" dur="1s" repeatCount="indefinite" />
-  </rect>
+  <text x="518" y="348" font-family="{MONO}" font-size="9.5" fill="{MUTED}">MANIFOLD: <tspan fill="{INK}">S³ ⊂ ℝ⁴</tspan></text>
+  <text x="824" y="348" text-anchor="end" font-family="{MONO}" font-size="9.5" fill="{MUTED}">ANGULAR_VEL: <tspan fill="{TECH}">0.314 rad/s</tspan></text>
 </g>
 """
 
@@ -250,7 +273,7 @@ def hero():
   <text x="48" y="396" font-family="{MONO}" font-size="13" fill="{INK}">linkedin.com/in/shubham-tambe-i9</text>
   <text class="nu" x="306" y="396" font-family="{MONO}" font-size="13" fill="{TECH}">&#8599;</text>
 </g>
-{cyber_ascii_graphic()}
+{wireframe_graphic()}
 """
     write("hero.svg", svg(W, h, body, ["serif", "serif-i", "sans", "mono"],
                           "Shubham Tambe. AI Research Contractor & Software Developer."))
