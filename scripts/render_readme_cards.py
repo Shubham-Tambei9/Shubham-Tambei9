@@ -320,11 +320,23 @@ REPOS = [
 def repo_card(i, name, desc, lang, color, stars):
     delay = 4.6 + i * 0.12
     meta = f"{lang}  ·  ★ {stars}" if stars else f"{lang}  ·  live"
+    
+    # Auto-scale title font-size so long repo names fit comfortably inside the card
+    if len(name) > 22:
+        title_size = 13.5
+        title_y = 38
+    elif len(name) > 17:
+        title_size = 15
+        title_y = 38
+    else:
+        title_size = 18
+        title_y = 39
+
     body = f"""
 <rect width="{REPO_W}" height="{REPO_H}" rx="14" fill="{PAPER}"/>
 <g class="r" {d(delay)}>
   <rect x="24" y="30" width="8" height="8" rx="2" fill="{color}"/>
-  <text x="40" y="39" font-family="{SANS}" font-weight="600" font-size="18" fill="{INK}">{escape(name)}</text>
+  <text x="40" y="{title_y}" font-family="{SANS}" font-weight="600" font-size="{title_size}" fill="{INK}">{escape(name)}</text>
   {text_lines(24, 72, wrap(desc, 34), 21, f'font-family="{SANS}" font-size="14" fill="{INK_SOFT}"')}
   <text x="24" y="{REPO_H - 24}" font-family="{MONO}" font-size="12" fill="{MUTED}">{escape(meta)}</text>
 </g>
