@@ -34,15 +34,15 @@ REEL_VIEWS = "12.7M"
 BLOG_READERS = "27.5K"
 
 # ---- brand tokens -----------------------------------------------------------
-PAPER = "#f3f3f1"
-PAPER_DEEP = "#e2e2de"
-INK = "#111111"
-INK_SOFT = "#3a3a3c"
-MUTED = "#6e6e73"
-RULE = "#dcdcd7"
-TECH = "#2f55ff"
-STUDIO = "#ef3b2d"
-LEARN = "#ffc81a"
+PAPER = "#161b22"
+PAPER_DEEP = "#21262d"
+INK = "#f0f6fc"
+INK_SOFT = "#c9d1d9"
+MUTED = "#8b949e"
+RULE = "#30363d"
+TECH = "#39d353"
+STUDIO = "#f85149"
+LEARN = "#e3b341"
 W = 880  # full card width, GitHub's README column at 100%
 
 SERIF = "'Instrument Serif', Georgia, serif"
@@ -174,7 +174,7 @@ def hero():
       keyTimes="0;.45;1" dur="7s" begin="1.6s" repeatCount="indefinite"/>
   </linearGradient>
 </defs>
-<rect width="{W}" height="{h}" rx="14" fill="{PAPER}"/>
+<rect width="{W}" height="{h}" rx="14" fill="{PAPER}" stroke="{RULE}" stroke-width="1"/>
 <g class="f" {d(0)}>
   <rect class="live" x="48" y="49" width="8" height="8" rx="2" fill="{TECH}"/>
   <text x="66" y="57" font-family="{MONO}" font-size="11" letter-spacing="1" fill="{MUTED}">AI RESEARCH CONTRACTOR &amp; SOFTWARE DEVELOPER</text>
@@ -265,7 +265,7 @@ def activity(data):
         is_best = m is best
         bh = max(4, round(m["total"] / top * maxh))
         x = x0 + i * (bw + gap)
-        fill = TECH if is_best else ("#c9c9c4" if partial else INK)
+        fill = TECH if is_best else ("#21262d" if partial else "#238636")
         label = datetime.date.fromisoformat(m["month"] + "-01").strftime("%b")
         bars.append(
             f'<rect class="g" style="animation-delay:{2.2 + i * 0.07:.2f}s" x="{x:.1f}" y="{base - bh}" '
@@ -298,7 +298,7 @@ def activity(data):
         if i < 2:
             side.append(f'<rect class="f" {d(2.6)} x="650" y="{y + 44}" width="190" height="1" fill="{RULE}"/>')
     body = f"""
-<rect width="{W}" height="{h}" rx="14" fill="{PAPER}"/>
+<rect width="{W}" height="{h}" rx="14" fill="{PAPER}" stroke="{RULE}" stroke-width="1"/>
 <text class="f" {d(1.9)} x="40" y="58" font-family="{MONO}" font-size="12" letter-spacing="1" fill="{MUTED}">THE LAST 12 MONTHS ON GITHUB</text>
 <text class="r" {d(2.0)} x="38" y="114" font-family="{SERIF}" font-size="52" fill="{INK}">{data["total_contributions"]:,} <tspan font-style="italic">contributions</tspan></text>
 {''.join(bars)}
@@ -333,7 +333,7 @@ def repo_card(i, name, desc, lang, color, stars):
         title_y = 39
 
     body = f"""
-<rect width="{REPO_W}" height="{REPO_H}" rx="14" fill="{PAPER}"/>
+<rect width="{REPO_W}" height="{REPO_H}" rx="14" fill="{PAPER}" stroke="{RULE}" stroke-width="1"/>
 <g class="r" {d(delay)}>
   <rect x="24" y="30" width="8" height="8" rx="2" fill="{color}"/>
   <text x="40" y="{title_y}" font-family="{SANS}" font-weight="600" font-size="{title_size}" fill="{INK}">{escape(name)}</text>
@@ -354,8 +354,8 @@ def section_title(text, italic, theme):
     write(f"title-coding-{theme}.svg", svg(W, 64, body, ["serif", "serif-i"], f"{text} {italic}", bottom=0))
 
 
-# ---- 5 · blue contribution graph -----------------------------------------------
-BLUE = [PAPER_DEEP, "#c8d3ff", "#94a8ff", "#6280ff", TECH, "#1a3be0"]
+# ---- 5 · green contribution graph ----------------------------------------------
+GREEN = [PAPER_DEEP, "#0e4429", "#006d32", "#26a641", TECH, "#56e36d"]
 
 
 def level_for(c):
@@ -379,7 +379,7 @@ def heatmap(data):
         delay = 1.0 + col * 0.03 + row * 0.02
         cells.append(
             f'<rect class="p" style="animation-delay:{delay:.2f}s" x="{gx + col * step}" y="{gy + row * step}" '
-            f'width="{cell}" height="{cell}" rx="3" fill="{BLUE[level_for(c)]}">'
+            f'width="{cell}" height="{cell}" rx="3" fill="{GREEN[level_for(c)]}">'
             f'<title>{day["date"]}: {c} contribution{"s" if c != 1 else ""}</title></rect>'
         )
     ncols = (len(days) + lead + 6) // 7
@@ -388,21 +388,21 @@ def heatmap(data):
         f'<text x="{gx + col * step}" y="{gy + 7 * step + 16}" font-family="{MONO}" font-size="11" fill="{MUTED}">{m}</text>'
         for col, m in months if col < ncols - 12
     )
-    legend_x = right - len(BLUE) * 14
+    legend_x = right - len(GREEN) * 14
     legend = "".join(
         f'<rect x="{legend_x + i * 14}" y="{gy + 7 * step + 6}" width="11" height="11" rx="2.5" fill="{c}"/>'
-        for i, c in enumerate(BLUE)
+        for i, c in enumerate(GREEN)
     )
     h = gy + 7 * step + 44
     body = f"""
-<rect width="{W}" height="{h}" rx="14" fill="{PAPER}"/>
-<text class="r" {d(0.8)} x="42" y="62" font-family="{SERIF}" font-size="34" fill="{INK}">Every day, <tspan font-style="italic" fill="{TECH}">in blue</tspan></text>
+<rect width="{W}" height="{h}" rx="14" fill="{PAPER}" stroke="{RULE}" stroke-width="1"/>
+<text class="r" {d(0.8)} x="42" y="62" font-family="{SERIF}" font-size="34" fill="{INK}">Every day, <tspan font-style="italic" fill="{TECH}">in green</tspan></text>
 <text class="f" {d(0.8)} x="{right}" y="60" text-anchor="end" font-family="{MONO}" font-size="12" letter-spacing="1" fill="{MUTED}">REFRESHED DAILY</text>
 {''.join(cells)}
 <g class="f" {d(2.4)}>{labels}
 <text x="{legend_x - 8}" y="{gy + 7 * step + 16}" text-anchor="end" font-family="{MONO}" font-size="11" fill="{MUTED}">less</text>
 {legend}
-<text x="{legend_x + len(BLUE) * 14 + 2}" y="{gy + 7 * step + 16}" font-family="{MONO}" font-size="11" fill="{MUTED}">more</text></g>
+<text x="{legend_x + len(GREEN) * 14 + 2}" y="{gy + 7 * step + 16}" font-family="{MONO}" font-size="11" fill="{MUTED}">more</text></g>
 """
     write("heatmap.svg", svg(W, h, body, ["serif", "serif-i", "mono"],
                              f'Contribution graph: {data["total_contributions"]:,} contributions in the last year'))
