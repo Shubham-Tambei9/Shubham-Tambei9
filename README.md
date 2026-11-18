@@ -14,3 +14,4 @@
 <p align="center">
 <a href="https://linkedin.com/in/shubham-tambe-i9">linkedin</a> &nbsp;/&nbsp; <a href="https://leetcode.com/u/shubham-tambei9/">leetcode</a> &nbsp;/&nbsp; <a href="https://www.codechef.com/users/shubhamtambei9">codechef</a> &nbsp;/&nbsp; <a href="https://www.hackerrank.com/profile/shubhamtambei9">hackerrank</a>
 </p>
+<!-- Profile art powered by GitHub Actions and Python SVG render pipeline -->
