@@ -150,82 +150,77 @@ def text_lines(x, y, lines, lh, attrs):
 
 
 # ---- 1 · hero -----------------------------------------------------------------
-def neural_net_graphic():
-    layers = [
-        {'name': 'INPUT', 'count': 4, 'x': 545},
-        {'name': 'CONV', 'count': 6, 'x': 628},
-        {'name': 'ATTN', 'count': 5, 'x': 712},
-        {'name': 'OUTPUT', 'count': 3, 'x': 795}
+def cyber_ascii_graphic():
+    art_lines = [
+        "              .-----------------------------------.",
+        "             /    [ AI NEURAL PROCESSOR // CORE ]  \\",
+        "       .----/---------------------------------------\\----.",
+        "      /|   [+] ======== TENSOR PIPELINE ======== [+]   |\\",
+        "     / |  .------------------------------------------.  | \\",
+        "    |  |  |  [INPUT BUFFER]  |  [MATRIX MULT ENGINE] |  |  |",
+        "    |==|  |   ::: ::::: :::  |   @@@ %%%%%%% @@@     |  |==|",
+        "    |  |  |------------------+-----------------------|  |  |",
+        "    |==|  |  [KV-CACHE SRAM] |  [ATTENTION CROSSBAR] |  |==|",
+        "    |  |  |   === ===== ===  |   ### ******* ###     |  |  |",
+        "    |==|  |------------------+-----------------------|  |  |",
+        "    |  |  |  [VECTOR FPU]    |  [QUANTUM LOGIC ALU]  |  |==|",
+        "    |  |  |   ... ..... ...  |   %%% ####### %%%     |  |  |",
+        "    |  |  '------------------------------------------'  |  |",
+        "    |==|  [+] [HOST_BUS: PCIe 5.0] [LATENCY: 1.2ns]  |==|",
+        "     \\ |                                                | /",
+        "      \\|   --==[ CLOCK: 4.8 GHz // FP16: 420 TFLOPS ]==-   |/",
+        "       '-------------------------------------------------'",
+        "               |||||||||||||||||||||||||||||||||||"
     ]
-    center_y = 215
-    total_h = 190
     
-    nodes = []
-    for l_idx, layer in enumerate(layers):
-        n = layer['count']
-        spacing = total_h / (n + 1)
-        layer_nodes = []
-        for i in range(n):
-            ny = (center_y - total_h / 2) + (i + 1) * spacing
-            layer_nodes.append((layer['x'], round(ny, 1)))
-        nodes.append(layer_nodes)
+    pad_x = 512
+    start_y = 108
+    line_h = 11.8
+    
+    rendered_rows = []
+    for i, line in enumerate(art_lines):
+        delay = 0.2 + i * 0.05
+        safe = escape(line)
+        y = start_y + i * line_h
         
-    lines = []
-    for l in range(len(nodes) - 1):
-        for p1 in nodes[l]:
-            for p2 in nodes[l+1]:
-                lines.append(f'<line x1="{p1[0]}" y1="{p1[1]}" x2="{p2[0]}" y2="{p2[1]}" stroke="#30363d" stroke-width="0.8" opacity="0.35" />')
-                
-    active_paths = [
-        (nodes[0][1], nodes[1][2]),
-        (nodes[1][2], nodes[2][2]),
-        (nodes[2][2], nodes[3][1]),
-        (nodes[0][2], nodes[1][3]),
-        (nodes[1][3], nodes[2][1]),
-        (nodes[2][1], nodes[3][0]),
-        (nodes[0][0], nodes[1][1]),
-        (nodes[1][1], nodes[2][3]),
-        (nodes[2][3], nodes[3][2]),
-    ]
-    active_lines = []
-    pulses = []
-    for i, (p1, p2) in enumerate(active_paths):
-        active_lines.append(f'<line x1="{p1[0]}" y1="{p1[1]}" x2="{p2[0]}" y2="{p2[1]}" stroke="#238636" stroke-width="1.6" opacity="0.85" />')
-        delay = (i % 4) * 0.42
-        pulses.append(
-            f'<circle r="2.5" fill="#56e36d">'
-            f'<animateMotion path="M {p1[0]} {p1[1]} L {p2[0]} {p2[1]}" dur="1.7s" repeatCount="indefinite" begin="{delay:.2f}s" />'
-            f'</circle>'
+        color = "#c9d1d9"
+        if "PROCESSOR" in safe or "TENSOR" in safe or "CLOCK" in safe:
+            color = TECH
+        elif "===" in safe or "---" in safe:
+            color = "#58a6ff"
+        elif "|||" in safe:
+            color = MUTED
+            
+        rendered_rows.append(
+            f'<text class="f" style="animation-delay:{delay:.2f}s" '
+            f'xml:space="preserve" x="{pad_x}" y="{y:.1f}" fill="{color}" '
+            f'font-family="{MONO}" font-size="8.8" '
+            f'letter-spacing="0.4">{safe}</text>'
         )
-        
-    labels = [
-        f'<text x="{l["x"]}" y="326" text-anchor="middle" font-family="{MONO}" font-size="9" letter-spacing="1" fill="#8b949e">{l["name"]}</text>'
-        for l in layers
-    ]
-
-    node_elements = []
-    for l_idx, layer_pts in enumerate(nodes):
-        for pt in layer_pts:
-            node_elements.append(
-                f'<circle cx="{pt[0]}" cy="{pt[1]}" r="5.5" fill="#161b22" stroke="#39d353" stroke-width="1.8" />'
-                f'<circle cx="{pt[0]}" cy="{pt[1]}" r="2" fill="#56e36d"><animate attributeName="opacity" values="0.4;1;0.4" dur="2.2s" repeatCount="indefinite" /></circle>'
-            )
 
     return f"""
-<g class="f" {d(0.3)}>
-  <rect x="500" y="52" width="338" height="308" rx="12" fill="#0d1117" stroke="#30363d" stroke-width="1" />
+<g class="f" {d(0.15)}>
+  <!-- Container Backplate -->
+  <rect x="500" y="52" width="338" height="308" rx="12" fill="#0d1117" stroke="{RULE}" stroke-width="1" />
+  
+  <!-- Header Terminal Bar -->
   <circle cx="522" cy="74" r="3.5" fill="{TECH}" />
-  <text x="534" y="78" font-family="{MONO}" font-size="10" letter-spacing="1" fill="{MUTED}">TENSOR_GRAPH // NEURAL_NET</text>
-  <text x="822" y="78" text-anchor="end" font-family="{MONO}" font-size="9.5" fill="{TECH}">FORWARD PASS [LIVE]</text>
+  <circle cx="534" cy="74" r="3.5" fill="{LEARN}" opacity="0.6" />
+  <circle cx="546" cy="74" r="3.5" fill="{STUDIO}" opacity="0.6" />
+  
+  <text x="562" y="78" font-family="{MONO}" font-size="10" letter-spacing="1" fill="{MUTED}">AI_CORE // SILICON_DIE_v4.2</text>
+  <text x="822" y="78" text-anchor="end" font-family="{MONO}" font-size="9" fill="{TECH}">ONLINE [READY]</text>
   <line x1="500" y1="92" x2="838" y2="92" stroke="{RULE}" stroke-width="1" />
-  {''.join(lines)}
-  {''.join(active_lines)}
-  {''.join(pulses)}
-  {''.join(node_elements)}
-  {''.join(labels)}
-  <line x1="500" y1="336" x2="838" y2="336" stroke="{RULE}" stroke-width="1" />
-  <text x="518" y="351" font-family="{MONO}" font-size="9.5" fill="{MUTED}">LATENT: <tspan fill="{INK}">ℝ^{{B×768}}</tspan></text>
-  <text x="822" y="351" text-anchor="end" font-family="{MONO}" font-size="9.5" fill="{MUTED}">INFERENCE: <tspan fill="{TECH}">&lt; 8.2ms</tspan></text>
+  
+  <!-- ASCII Circuit Diagram Rows -->
+  {''.join(rendered_rows)}
+  
+  <!-- Terminal Prompt Footer -->
+  <line x1="500" y1="334" x2="838" y2="334" stroke="{RULE}" stroke-width="1" />
+  <text x="518" y="349" font-family="{MONO}" font-size="10" fill="{MUTED}">shubham@ai-cluster:~$ <tspan fill="{INK}">run inference</tspan></text>
+  <rect x="742" y="339" width="6" height="11" fill="{TECH}">
+    <animate attributeName="opacity" values="1;1;0;0" keyTimes="0;0.5;0.51;1" dur="1s" repeatCount="indefinite" />
+  </rect>
 </g>
 """
 
@@ -256,7 +251,7 @@ def hero():
   <text x="48" y="396" font-family="{MONO}" font-size="13" fill="{INK}">linkedin.com/in/shubham-tambe-i9</text>
   <text class="nu" x="306" y="396" font-family="{MONO}" font-size="13" fill="{TECH}">&#8599;</text>
 </g>
-{neural_net_graphic()}
+{cyber_ascii_graphic()}
 """
     write("hero.svg", svg(W, h, body, ["serif", "serif-i", "sans", "mono"],
                           "Shubham Tambe. AI Research Contractor & Software Developer."))
